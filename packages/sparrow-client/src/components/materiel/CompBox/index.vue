@@ -128,7 +128,7 @@
             <i @click.stop="openDrawerHandler(item)" class="iconfont icon-data"></i>
           </div>
         </div>
-        <!-- <div class="file-box">
+        <div class="file-box">
           <div class="codemirror-operate">
             <span class="update-data" @click.stop="updateCodeData">更新</span>
           </div>
@@ -140,7 +140,7 @@
               <json-handler :json-data="jsonData"></json-handler>
             </el-tab-pane>
           </el-tabs>
-        </div> -->
+        </div>
       </div>
 
       <div class="tab-content" v-show="activeTreeIndex === 5">
@@ -366,7 +366,7 @@ export default class CompBox extends Vue {
     this.getCustomComp('');
     this.getFileList();
     this.getPlugin();
-
+    
     setTimeout(() => {
       codemirror.codemirror.refresh();
     }, 100);

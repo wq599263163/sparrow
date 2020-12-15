@@ -3,17 +3,15 @@
     <Toolbox />
   </div>
 </template>
-<script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+<script>
 import Toolbox from './Toolbox';
 
-@Component({
+export default {
   name: 'Setting',
   components: {
     Toolbox
   }
-})
-export default class extends Vue {}
+}
 </script>
 <style lang="scss" scoped>
 .setting {

@@ -179,7 +179,7 @@ export default class extends Vue {
       this.JH = data;
       this.JH.md.jsonH._pri.uiEvtCallback.submitEnterForm(this.jsonData);
     });
-
+    console.log(chrome, 'chrome2')
     /* eslint-disable */
 		chrome.extension = chrome.extension || {
 			sendRequest : function (o, f) {

@@ -4,7 +4,7 @@
       <el-tab-pane label="工具盒" class="widget-collapse" name="tool">
         <div class="tool-filter">
           <div>
-            <el-input 
+            <el-input
               placeholder="请输入内容"
               v-model="search"
               @input="searchChange"
@@ -12,19 +12,19 @@
               <i slot="suffix" class="el-input__icon el-icon-search"></i>
             </el-input>
           </div>
-          <div style="margin-top: 15px">
+          <div style="margin-top: 15px;margin-bottom:15px">
             <el-radio-group
               v-model="widget"
               size="small"
               @change="toggleWidget"
             >
-              <el-radio-button label="组件"></el-radio-button>
-              <el-radio-button label="编辑区块"></el-radio-button>
-              <el-radio-button label="静态区块"></el-radio-button>
+              <el-radio-button label="component">组件</el-radio-button>
+              <el-radio-button label="editBlock">编辑区块</el-radio-button>
+              <el-radio-button label="staticBlock">静态区块</el-radio-button>
             </el-radio-group>
           </div>
         </div>
-        <div class="widget-box" v-if="widget === '组件'">
+        <div class="widget-box" v-if="widget === 'component'">
           <el-collapse v-model="activeNames" @change="handleChange">
             <el-collapse-item
               v-for="(item, index) in compList"
@@ -55,8 +55,8 @@
             </el-collapse-item>
           </el-collapse>
         </div>
-        <div class="widget-box" v-if="widget === '编辑区块'">
-           <el-collapse v-model="editBlockActiveNames" @change="handleChange">
+        <div class="widget-box" v-if="widget === 'editBlock'">
+          <el-collapse v-model="editBlockActiveNames" @change="handleChange">
             <el-collapse-item
               v-for="(item, index) in editBlockList"
               :key="index"
@@ -74,7 +74,9 @@
                   <div class="drag-box">
                     <div class="drag-box-item" :data-name="comp.label">
                       <img :src="comp.thumb" style="width: 100%" />
-                      <span class="comp-list-label edit-box-label">{{ comp.label }}</span>
+                      <span class="comp-list-label edit-box-label">{{
+                        comp.label
+                      }}</span>
                     </div>
                   </div>
                 </div>
@@ -82,7 +84,7 @@
             </el-collapse-item>
           </el-collapse>
         </div>
-        <div class="widget-box" v-if="widget === '静态区块'">
+        <div class="widget-box" v-if="widget === 'staticBlock'">
           <el-collapse v-model="blockNames" @change="handleChange">
             <el-collapse-item title="区块" :name="0">
               <div class="block-list drag-box">
@@ -152,12 +154,12 @@ import html2canvas from 'html2canvas';
 
 export default {
   components: {
-    FormSetting,
+    FormSetting
   },
   data() {
     return {
       search: '',
-      widget: '组件',
+      widget: 'component',
       compList: [],
       activeNames: [0, 1, 2, 3, 4, 5, 6],
       blockNames: [0],
@@ -175,12 +177,14 @@ export default {
     };
   },
   async created() {
-    this.getWidgetList = _.debounce(this.getWidgetList, 500, { trailing: true });
+    this.getWidgetList = _.debounce(this.getWidgetList, 500, {
+      trailing: true
+    });
     this.getWidgetList('');
-    this.$root.$on('bind_client_drag', (data) => {
+    this.$root.$on('bind_client_drag', data => {
       this.bindClientDrag();
     });
-    this.$root.$on('mousedown_widget', (data) => {
+    this.$root.$on('mousedown_widget', data => {
       this.widgetData = data;
     });
 
@@ -232,7 +236,7 @@ export default {
       this.dialogVisible = false;
     },
 
-    async addEditComp (id, config, path) {
+    async addEditComp(id, config, path) {
       const params = {
         boxUuid: AppModule.boxUuid,
         id,
@@ -255,10 +259,10 @@ export default {
       // material.index.getBlocks
     },
     async toggleWidget(value) {
-      if (value === '静态区块') {
+      if (value === 'staticBlock') {
         await this.getStaticBlock();
       }
-      if (value === '编辑区块') {
+      if (value === 'editBlock') {
         await this.getEditBlockList();
       }
       this.bindClientDrag();
@@ -289,7 +293,7 @@ export default {
       list.forEach(item => {
         Sortable.create(item, {
           group: {
-            name: 'nested',
+            name: 'nested'
             // pull: 'clone',
           },
           forceFallback: false,
@@ -308,7 +312,11 @@ export default {
           },
           onEnd: event => {
             const item = event.item;
-            const compId = item.getAttribute('data-id') || item.querySelector('[data-design-mode=design-border]').getAttribute('data-id');
+            const compId =
+              item.getAttribute('data-id') ||
+              item
+                .querySelector('[data-design-mode=design-border]')
+                .getAttribute('data-id');
             const boxId = event.to.getAttribute('data-id');
             const nextSiblingId =
               item.nextElementSibling &&
@@ -320,13 +328,13 @@ export default {
       });
     },
     bindClientDrag() {
-      const dragList = document.querySelectorAll('.drag-box'); 
+      const dragList = document.querySelectorAll('.drag-box');
       dragList.forEach(item => {
         Sortable.create(item, {
           group: {
             name: 'nested',
             pull: 'clone',
-            put: false,
+            put: false
           },
           sort: false,
           ghostClass: 'sortable-ghost',
@@ -365,7 +373,7 @@ export default {
               };
               return;
             }
-            if (this.widgetData.type ==='editBox') {
+            if (this.widgetData.type === 'editBox') {
               const params = {
                 boxUuid,
                 id: this.widgetData.id,
@@ -374,7 +382,6 @@ export default {
               };
 
               await socket.emit('generator.scene.addEditComp', params);
-
             } else if (this.widgetData.type === 'block') {
               Loading.open();
               await socket.emit('generator.scene.addBlock', {
@@ -402,7 +409,7 @@ export default {
       });
     },
 
-    setDragImage (dataTransfer, dragEl, text = '') {
+    setDragImage(dataTransfer, dragEl, text = '') {
       const canvas = document.createElement('canvas');
       canvas.width = 200;
       canvas.height = 60;
@@ -428,34 +435,35 @@ export default {
       Loading.close();
     },
     async getWidgetList(value) {
-      const componentMap = await socket.emit('generator.data.getWidgetList', {value});
+      const componentMap = await socket.emit('generator.data.getWidgetList', {
+        value
+      });
       this.compList = componentMap;
       this.bindClientDrag();
     },
-    searchChange (value) {
+    searchChange(value) {
       this.getWidgetList(value);
     },
-    async dragViewWidget (compId, boxId, nextSiblingId) {
+    async dragViewWidget(compId, boxId, nextSiblingId) {
       await socket.emit('generator.scene.dragViewWidgetHandler', {
         compId,
         boxId,
-        nextSiblingId,
+        nextSiblingId
       });
 
       setTimeout(() => {
         this.bindDrag();
-      }, 500)
+      }, 500);
     },
-    settingChange (data) {
+    settingChange(data) {
       this.settingId = data.id;
       // this.activeBoxName = 'setting';
     },
-    async deleteComp () {  
+    async deleteComp() {
       await socket.emit('generator.scene.deleteComponent', {
         id: this.settingId
       });
       this.activeBoxName = 'tool';
-
     }
   }
 };
@@ -474,7 +482,7 @@ export default {
   flex-wrap: wrap;
 }
 .comp-item {
-  width: 33%;
+  width: 33.33%;
   height: 80px;
   text-align: center;
   vertical-align: top;
@@ -485,7 +493,7 @@ export default {
   align-items: center;
   cursor: pointer;
 }
-.edit-box-item{
+.edit-box-item {
   width: 50%;
   height: 120px;
   text-align: center;
@@ -497,11 +505,11 @@ export default {
   align-items: center;
   cursor: pointer;
 }
-.edit-box-item:hover{
+.edit-box-item:hover {
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
 .comp-item:hover {
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0px 0px 5px 1px rgba(0, 0, 0, 0.5);
 }
 .block-list {
   display: flex;
@@ -624,7 +632,7 @@ export default {
   padding: 10px;
   color: #909399;
 }
-.drag-box{
+.drag-box {
   width: 100%;
   height: 100%;
 }
@@ -641,16 +649,16 @@ export default {
   box-sizing: border-box;
   position: relative;
 }
-.edit-box-label{
+.edit-box-label {
   position: absolute;
   bottom: 5px;
 }
 
-.footer-delete{
+.footer-delete {
   height: 48px;
   width: 100%;
   font-size: 16px;
-  color: #F56C6C;
+  color: #f56c6c;
   border: 1px solid #d7dae2;
   border-radius: 4px;
   position: absolute;
@@ -662,26 +670,26 @@ export default {
   background-color: #f4f4f5;
   cursor: pointer;
 }
-.footer-delete:hover{
+.footer-delete:hover {
   background-color: #fef0f0;
 }
 
-.svg-icon{
+.svg-icon {
   // width: 2em;
 }
-.svg-icon-box{
+.svg-icon-box {
   width: 36px;
   height: 46px;
 }
-.icon{
+.icon {
   height: 28px;
 }
 </style>
 <style lang="scss">
-.toolbox .el-tabs--border-card>.el-tabs__content{
+.toolbox .el-tabs--border-card > .el-tabs__content {
   height: 100%;
 }
-.drag-class{
+.drag-class {
   // display: none !important;
   // background: red;
 }

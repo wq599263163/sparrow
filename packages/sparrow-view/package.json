@@ -3,6 +3,7 @@
   "version": "0.4.2",
   "scripts": {
     "serve": "vue-cli-service serve --port 9000",
+    "dev": "npm run serve",
     "build": "vue-cli-service build"
   },
   "dependencies": {

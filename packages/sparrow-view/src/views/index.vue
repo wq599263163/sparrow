@@ -1,9 +1,13 @@
 <template>
-  <div
-    class="home drag-box"
-    data-id="f4110b94"
-    style="backgroundImage: url(https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/dded9db02e3f4052bbf451f04d3d9b5b~tplv-k3u1fbpfcp-zoom-1.image);"
-  >
+  <div class="home drag-box" data-id="5b0960a3" style="">
+    <el-header
+      data-design-mode="design-border-box"
+      data-instance-name="ElHeader"
+      class="drag-box"
+      data-id="53b833a6"
+      data-empty="true"
+    />
+
     <div />
   </div>
 </template>

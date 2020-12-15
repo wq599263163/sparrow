@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="drawer">
-      <!-- <el-drawer
+      <el-drawer
         title=""
         :visible.sync="showCodeDraw"
         :append-to-body="true"
@@ -33,7 +33,7 @@
             v-model="config._slot.data"
           ></codemirror>
         </div>
-      </el-drawer> -->
+      </el-drawer>
     </div>
   </div>
 </template>
