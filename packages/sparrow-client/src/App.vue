@@ -34,8 +34,7 @@
     </div>
   </div>
 </template>
-<script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
+<script>
 import Logo from '@/components/logo.vue';
 import Dashboard from '@/components/materiel/Dashboard.vue';
 import socket from '@/util/socket.js';
@@ -47,34 +46,25 @@ import { SettingModule } from '@/store/modules/setting';
 import CompBox from '@/components/materiel/CompBox/index.vue';
 import JsonEditor from '@/components/JsonEditor/index.vue';
 import _ from 'lodash';
-@Component({
+export default {
+  name: 'app',
   components: {
-    Logo,
+    // Logo,
     Dashboard,
     TopToolbar,
     Setting,
-    CompBox,
-    JsonEditor,
-  }
-})
-export default class App extends Vue {
-  private dashboardTabIndex = '0';
-  private settingData = null;
-  private settingWidth = '80px';
-  private formIndex = 0;
-  private isCompPast = true;
-
-  get showDashboard() {
-    return AppModule.showDashboard;
-  }
-
-  get showComponentBox() {
-    return AppModule.showComponentBox;
-  }
-
-  get boxUuid() {
-    return AppModule.boxUuid;
-  }
+    CompBox
+    // JsonEditor,
+  },
+  data() {
+    return {
+      dashboardTabIndex: '0',
+      settingData: null,
+      settingWidth: '80px',
+      formIndex: 0,
+      isCompPast: true
+    };
+  },
 
   async created() {
     await socket.emit('home.index.init');
@@ -94,10 +84,13 @@ export default class App extends Vue {
         if (data.handler === 'client.component.insertLabel') {
           const params = {
             data: {
-              ...data.data.params,
+              ...data.data.params
             }
           };
-          const result = await socket.emit('generator.scene.insertLabel', params);
+          const result = await socket.emit(
+            'generator.scene.insertLabel',
+            params
+          );
         }
 
         // 同步编辑文本文案
@@ -107,7 +100,7 @@ export default class App extends Vue {
         }
 
         if (data.handler === 'client.screen.keydown') {
-          const {operate} = data;
+          const { operate } = data;
 
           if (operate === 'ctrl+c') {
             this.isCompPast = true;
@@ -121,7 +114,6 @@ export default class App extends Vue {
           } else if (operate === 'delete') {
             this.deleteComp();
           }
-
         }
 
         if (data.handler === 'client.component.paste') {
@@ -146,48 +138,58 @@ export default class App extends Vue {
       Loading.close();
     });
 
-    socket.on('generator.force.refresh',data => {
-      const viewContent:any = document.querySelector('#viewContent')
+    socket.on('generator.force.refresh', data => {
+      const viewContent = document.querySelector('#viewContent');
       setTimeout(() => {
-        viewContent.contentWindow.location.reload(true)
-      }, 500)
-    })
+        viewContent.contentWindow.location.reload(true);
+      }, 500);
+    });
 
     this.settingData = {};
-  }
+  },
+
+  computed: {
+    showDashboard() {
+      return AppModule.showDashboard;
+    },
+    showComponentBox() {
+      return AppModule.showComponentBox;
+    },
+    boxUuid() {
+      return AppModule.boxUuid;
+    }
+  },
 
   mounted() {
-    const viewContent: any = this.$refs.viewContent;
+    const viewContent = this.$refs.viewContent;
     viewContent.addEventListener('click', e => {
       e.stopPropagation();
     });
+  },
+  methods: {
+    async pasteHandler() {
+      // pasteHandler
+      const result = await socket.emit('generator.scene.pasteHandler', {
+        compId: this.boxUuid
+      });
+    },
+    async deleteComp() {
+      await socket.emit('generator.scene.deleteComponent', {
+        id: AppModule.activeCompId
+      });
+    },
+    async copyHandler() {
+      const result = await socket.emit('generator.scene.copyHandler', {
+        activeCompId: AppModule.activeCompId
+      });
+      this.$message({
+        message: '复制成功',
+        type: 'success'
+      });
+    },
+    async selectedHandler(data) {}
   }
-
-  private async pasteHandler () {
-    // pasteHandler
-    const result = await socket.emit('generator.scene.pasteHandler', {
-      compId: this.boxUuid,
-    });
-  }
-
-  private async deleteComp () {
-    await socket.emit('generator.scene.deleteComponent', {
-      id: AppModule.activeCompId
-    });
-  }
-
-  private async copyHandler () {
-    const result = await socket.emit('generator.scene.copyHandler', {
-      activeCompId: AppModule.activeCompId
-    });
-    this.$message({
-      message: '复制成功',
-      type: 'success'
-    });
-  }
-
-  private async selectedHandler(data) {}
-}
+};
 </script>
 
 <style lang="scss">
@@ -250,10 +252,10 @@ body {
   overflow: visible;
   vertical-align: -0.125em;
 }
-.is-drop-inner>.el-tree-node__content .custom-tree-node{
-  background: #409EFF;
+.is-drop-inner > .el-tree-node__content .custom-tree-node {
+  background: #409eff;
 }
-.drag-class{
+.drag-class {
   display: none;
 }
 </style>

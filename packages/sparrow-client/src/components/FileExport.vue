@@ -44,6 +44,7 @@
   </el-dialog>
 </template>
 <script lang="ts">
+// @ts-ignore
 import socket from '@/util/socket.js';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 

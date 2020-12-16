@@ -44,11 +44,11 @@ Vue.use(ModuleLibrary);
 // Vue.use(ModuleLibrarySourcecode);
 Vue.use(ModuleLibraryObject);
 
-Vue.component("field-sourcecode", sourcecode);
+Vue.component('fieldSourcecode', sourcecode);
 
-Vue.component('font-awesome-icon', FontAwesomeIcon);
+Vue.component('fontAwesomeIcon', FontAwesomeIcon);
 
-Vue.component("ArrayContainer", ArrayContainer);
+Vue.component('ArrayContainer', ArrayContainer);
 Vue.config.productionTip = false;
 receiveMessage();
 Vue.use(Element);

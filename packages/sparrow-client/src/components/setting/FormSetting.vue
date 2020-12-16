@@ -6,9 +6,9 @@
       </div>
       <el-divider></el-divider>
       <div class="generator-box" v-if="config && config.schema && config.model">
-        <vue-form-generator 
-          :schema="config.schema" 
-          :model="config.model" 
+        <vue-form-generator
+          :schema="config.schema"
+          :model="config.model"
           :options="formOptions"
         ></vue-form-generator>
       </div>
@@ -20,8 +20,7 @@
         :append-to-body="true"
         :modal="false"
         custom-class="drawer-st"
-        >
-
+      >
         <div>
           <codemirror
             v-if="codeEditType === 'form'"
@@ -39,17 +38,21 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+// @ts-ignore
 import { SettingModule } from '@/store/modules/setting';
+// @ts-ignore
 import { AppModule } from '@/store/modules/app';
+// @ts-ignore
 import socket from '@/util/socket.js';
-import JsonHandler from '@/components/jsonhandler/index.vue';
+// @ts-ignore
+// import JsonHandler from '@/components/jsonhandler/index.vue';
 import RuleList from './RuleList.vue';
 import _ from 'lodash';
 
 @Component({
   name: 'Setting',
   components: {
-    JsonHandler,
+    // JsonHandler,
     RuleList
   }
 })
@@ -76,7 +79,7 @@ export default class extends Vue {
 
   private codeEditType = '';
   private uuid = '';
-  private config = {
+  private config: any = {
     model: {
       attr: {}
     }
@@ -89,14 +92,19 @@ export default class extends Vue {
   };
 
   private async created() {
-
+    // @ts-ignore
     window.EventCustomer.addListener('click_json_tree_callback', data => {
       try {
-        this.$set(this.config.model.attr, 'v-model', data.path === 'JSON' ? '' : data.path.replace('JSON.', ''))
+        this.$set(
+          this.config.model.attr,
+          'v-model',
+          data.path === 'JSON' ? '' : data.path.replace('JSON.', '')
+        );
         // this.config.model.attr['v-model'] = data.path === 'JSON' ? '' : data.path.replace('JSON.', '');
-      } catch (e) {}
-      
-    })
+      } catch (e) {
+        console.error(e);
+      }
+    });
 
     window.addEventListener('message', async event => {
       const { data } = event;
@@ -104,11 +112,11 @@ export default class extends Vue {
         this.uuid = _.get(data, 'data.params.uuid');
 
         const result = await socket.emit('generator.scene.getConfig', {
-          uuid: this.uuid,
+          uuid: this.uuid
         });
         AppModule.setActiveCompId(this.uuid);
         this.config = result;
-        this.$emit('change', {id: this.uuid});
+        this.$emit('change', { id: this.uuid });
         this.refresh();
       }
 
@@ -116,16 +124,16 @@ export default class extends Vue {
         this.uuid = _.get(data, 'data.params.uuid');
         AppModule.setActiveCompId(this.uuid);
         const result = await socket.emit('generator.scene.getConfig', {
-          uuid: _.get(data, 'uuid'),
+          uuid: _.get(data, 'uuid')
         });
         this.config = result;
-        this.$emit('change', {id: this.uuid});
+        this.$emit('change', { id: this.uuid });
         this.refresh();
       }
-    })
+    });
   }
 
-  private refresh () {
+  private refresh() {
     const codemirror: any = this.$refs.codemirror;
     if (codemirror) codemirror.codemirror.refresh();
   }
@@ -169,7 +177,6 @@ export default class extends Vue {
   //   }
   // }
 
-
   private handleCodeClick() {
     if (this.activeNameCode === 'json') {
       this.jsonData = JSON.stringify(
@@ -183,6 +190,7 @@ export default class extends Vue {
   private handleCodeItemClick() {
     if (this.activeItemCode === 'json') {
       this.jsonItemData = JSON.stringify(
+        // @ts-ignore
         eval(
           `function getData () {${this.config._attr[':default']}; return data;} getData()`
         )
@@ -190,12 +198,11 @@ export default class extends Vue {
     }
   }
 
+  private handleClick() {}
 
-  private handleClick () {}
-
-  private async syncConfig () {
+  private async syncConfig() {
     if (!this.uuid || !this.config) return;
-     const result = await socket.emit('generator.scene.settingConfig', {
+    const result = await socket.emit('generator.scene.settingConfig', {
       boxUuid: AppModule.boxUuid,
       data: {
         uuid: this.uuid,
@@ -204,26 +211,26 @@ export default class extends Vue {
     });
   }
 
-  private expansionHandler (codeEditType) {
+  private expansionHandler(codeEditType) {
     this.showCodeDraw = true;
     this.codeEditType = codeEditType;
   }
 
-  private sureCodeHandler () {
+  private sureCodeHandler() {
     this.showCodeDraw = false;
     this.setting.dataCode = this.tempCode;
   }
 }
 </script>
 <style lang="scss">
-.drawer-st{
+.drawer-st {
   right: 290px !important;
   width: 500px !important;
 }
-.vue-form-generator .field-wrap{
+.vue-form-generator .field-wrap {
   margin-top: 5px;
 }
-.array-button-add{
+.array-button-add {
   margin-top: 10px !important;
 }
 </style>
@@ -242,15 +249,14 @@ export default class extends Vue {
     color: #66b1ff;
   }
 }
-.codemirror-operate{
+.codemirror-operate {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.generator-box{
+.generator-box {
   height: calc(100% - 100px);
   padding-bottom: 50px;
   overflow: scroll;
 }
-
 </style>

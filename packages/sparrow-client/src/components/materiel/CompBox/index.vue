@@ -60,7 +60,10 @@
         >
           <span class="custom-tree-node" slot-scope="{ node, data }">
             <span>{{ node.label }}</span>
-            <div class="tree-tool" v-if="selectedNode.id && selectedNode.id === data.id">
+            <div
+              class="tree-tool"
+              v-if="selectedNode.id && selectedNode.id === data.id"
+            >
               <span>
                 <i
                   class="iconfont icon-delete1 icon-delete-comp"
@@ -99,7 +102,7 @@
                   style="margin-right: 10px"
                   size="mini"
                   @click="useScene(item.id)"
-                  >
+                >
                   <i class="iconfont icon-shiyongxuzhi" />
                   <span>使用</span></el-button
                 >
@@ -108,7 +111,9 @@
                   @onConfirm="deleteScene(item.id)"
                 >
                   <el-button slot="reference" type="danger" size="mini"
-                    ><i class="iconfont icon-delete1 icon-delete-tree" /><span>删除</span></el-button
+                    ><i class="iconfont icon-delete1 icon-delete-tree" /><span
+                      >删除</span
+                    ></el-button
                   >
                 </el-popconfirm>
               </div>
@@ -118,14 +123,18 @@
       </div>
 
       <div v-show="activeTreeIndex === 4">
-        <div class="file-item"
+        <div
+          class="file-item"
           v-for="item in fileList"
           :key="item.uuid"
           @click="openToolDialog(item)"
         >
           {{ item.fileName }}
           <div>
-            <i @click.stop="openDrawerHandler(item)" class="iconfont icon-data"></i>
+            <i
+              @click.stop="openDrawerHandler(item)"
+              class="iconfont icon-data"
+            ></i>
           </div>
         </div>
         <div class="file-box">
@@ -164,8 +173,8 @@
                 @mousedown="mousedownWidget(item)"
               >
                 <div class="drag-box">
-                  <div class="drag-box-item"  v-if="item.thumb">
-                    <img :src="item.thumb" class="thumb-img">
+                  <div class="drag-box-item" v-if="item.thumb">
+                    <img :src="item.thumb" class="thumb-img" />
                   </div>
                   <div>
                     <div class="comp-item__title">{{ item.label }}</div>
@@ -251,7 +260,8 @@
       class="custom-drawer"
       :direction="'ltr'"
       :size="'320px'"
-      :wrapperClosable="false">
+      :wrapperClosable="false"
+    >
       <json-handler :json-data="jsonData"></json-handler>
     </el-drawer>
   </div>
@@ -259,11 +269,11 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { AppModule } from '@/store/modules/app';
-import socket from '@/util/socket.js';
-import JsonHandler from '@/components/jsonhandler/index.vue';
+import { AppModule } from '../../../store/modules/app';
+import socket from '../../../util/socket.js';
+import JsonHandler from '../../../components/jsonhandler/index.vue';
 import _ from 'lodash';
-import Loading from '@/util/loading';
+import Loading from '../../../util/loading';
 import ToolBox from './ToolBox.vue';
 
 @Component({
@@ -280,7 +290,7 @@ export default class CompBox extends Vue {
   private selectedNode = {};
   private currentNodeKey = '';
   private sceneList = [];
-  private dataCode = `var data = {}`;
+  private dataCode = 'var data = {}';
   private jsonData = '"{}"';
   private activeNameCode = 'code';
   private search = '';
@@ -314,6 +324,7 @@ export default class CompBox extends Vue {
   }
 
   async created() {
+    // @ts-ignore
     const { type, params } = this.insertData.data;
     const componentMap = await socket.emit('generator.data.getCompList');
     this.componentMap = componentMap;
@@ -322,7 +333,9 @@ export default class CompBox extends Vue {
     } else {
       this.componentList = componentMap[params.compBox];
     }
-    this.getCustomComp = _.debounce(this.getCustomComp, 500, { trailing: true });
+    this.getCustomComp = _.debounce(this.getCustomComp, 500, {
+      trailing: true
+    });
     socket.on('generator.plugin.status', data => {
       Loading.close();
       this.getPlugin();
@@ -366,7 +379,7 @@ export default class CompBox extends Vue {
     this.getCustomComp('');
     this.getFileList();
     this.getPlugin();
-    
+
     setTimeout(() => {
       codemirror.codemirror.refresh();
     }, 100);
@@ -458,6 +471,7 @@ export default class CompBox extends Vue {
     });
 
     if (result && result.status === 0) {
+      // @ts-ignore
       this.$message({
         message: '操作成功',
         type: 'success'
@@ -482,7 +496,7 @@ export default class CompBox extends Vue {
     this.getCustomComp(value);
   }
 
-  private mousedownWidget (item) {
+  private mousedownWidget(item) {
     this.widgetData = item;
     this.widgetData.id = this.widgetData.key;
     this.widgetData.type = 'custom';
@@ -504,7 +518,7 @@ export default class CompBox extends Vue {
     Loading.open();
     const res = await socket.emit('generator.plugin.installPlugin', {
       packageName: this.packageName,
-      installType: this.installType,
+      installType: this.installType
     });
   }
 
@@ -512,7 +526,7 @@ export default class CompBox extends Vue {
     const res = await socket.emit('generator.plugin.getPlugin', {
       packageName: this.packageName
     });
-    const {list} = res;
+    const { list } = res;
     this.pluginList = list;
   }
 }
@@ -540,7 +554,7 @@ export default class CompBox extends Vue {
   background-color: #f0f9eb;
 }
 .active .iconfont {
-  color: #409EFF;
+  color: #409eff;
 }
 .tabs-body {
   height: 100%;
@@ -578,7 +592,7 @@ export default class CompBox extends Vue {
   padding: 5px;
   width: 100%;
   box-sizing: border-box;
-  background-color: #409EFF;
+  background-color: #409eff;
 }
 .scene-item {
   position: relative;
@@ -612,62 +626,63 @@ export default class CompBox extends Vue {
   background-repeat: no-repeat;
   background-color: #fff;
 }
-.iconfont{
+.iconfont {
   font-size: 12px;
   margin-right: 5px;
 }
-.icon-delete-tree{
+.icon-delete-tree {
   color: #fff;
 }
-.tree-tool{
+.tree-tool {
   display: inline-block;
 }
-.icon-plus{
+.icon-plus {
   padding: 0 6px;
   color: #909399;
 }
-.update-data{
+.update-data {
   cursor: pointer;
 }
-.el-icon{
+.el-icon {
   font-size: 20px;
 }
-.custom-comp-box{
+.custom-comp-box {
   padding: 10px;
   height: calc(100% - 70px);
 }
-.file-box{
+.file-box {
   padding: 10px;
 }
 
-.tab-content{
+.tab-content {
   height: 100%;
 }
 
-.comp-box{
+.comp-box {
   height: 100%;
   padding-top: 10px;
   overflow: scroll;
 }
-.comp-item{
+.comp-item {
   padding: 10px;
-  border: 1px solid rgba(0, 0, 0, .1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 2px;
   margin-bottom: 5px;
-  &__title{
+  &__title {
     color: #303133;
     font-size: 14px;
     margin-bottom: 5px;
   }
-  &__des{
+  &__des {
     color: #606266;
     font-size: 12px;
   }
 }
-.comp-item:hover{
+.comp-item:hover {
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
-.drag-box{}
+.drag-box {
+}
 .drag-box-item {
   width: 100%;
   height: 50px;
@@ -680,10 +695,10 @@ export default class CompBox extends Vue {
   position: relative;
   margin-bottom: 5px;
   overflow: hidden;
-  border-bottom: 1px solid #F2F6FC;
+  border-bottom: 1px solid #f2f6fc;
 }
 
-.thumb-img{
+.thumb-img {
   border: none;
   max-width: 100%;
   max-height: 100%;
@@ -697,21 +712,21 @@ export default class CompBox extends Vue {
   flex-direction: row;
   justify-content: space-between;
 }
-.file-item:hover{
+.file-item:hover {
   background-color: #79bbff;
   color: #fff;
 }
-.custom-drawer{
+.custom-drawer {
   width: 321px;
 }
-.plugin-box{
+.plugin-box {
   display: flex;
   padding: 10px 10px 0;
 }
-.plugin-list{
+.plugin-list {
   margin-top: 10px;
 }
-.plugin-item{
+.plugin-item {
   margin-bottom: 10px;
 }
 </style>

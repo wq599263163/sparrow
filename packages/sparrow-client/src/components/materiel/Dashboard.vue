@@ -30,7 +30,9 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import BlockBox from './BlockBox.vue';
+// @ts-ignore
 import { AppModule } from '@/store/modules/app';
+// @ts-ignore
 import socket from '@/util/socket.js';
 
 @Component({

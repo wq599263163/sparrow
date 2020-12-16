@@ -48,7 +48,11 @@
     </div>
     <div class="toolbar-right">
       <div class="toolbar__item">
-        <a class="help-link" target="_blank" href="https://sparrow-js.github.io/sparrow-vue-site/">
+        <a
+          class="help-link"
+          target="_blank"
+          href="https://sparrow-js.github.io/sparrow-vue-site/"
+        >
           <i class="iconfont icon-bangzhu"></i>
         </a>
       </div>
@@ -79,26 +83,29 @@
       <span class="scene-item" @click="sceneHandler('BaseTable')">基础表格</span>
     </el-popover> -->
 
-
     <el-dialog title="创建模块" width="400px" :visible.sync="dialogFormVisible">
       <el-form :model="form" label-width="80px">
         <el-form-item label="模块名称" required>
           <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="预览图">
-          <img :src="form.url" width="280"/>
+          <img :src="form.url" width="280" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="dialogFormVisible = false">取 消</el-button>
-        <el-button size="mini" type="primary" @click="sureSaveScene">确 定</el-button>
+        <el-button size="mini" @click="dialogFormVisible = false"
+          >取 消</el-button
+        >
+        <el-button size="mini" type="primary" @click="sureSaveScene"
+          >确 定</el-button
+        >
       </div>
     </el-dialog>
-
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
+// @ts-ignore
 import socket from '@/util/socket.js';
 import FileExport from './FileExport.vue';
 
@@ -125,10 +132,13 @@ export default class extends Vue {
   async created() {
     const result = await socket.emit('home.setting.workFolder');
     this.workFolder = result;
-  
+
     this.init();
     socket.on('generator.toolbar.openCodeEditor.result', data => {
-      this.$message.error('打开编辑器失败，请先手动启动编辑器，或者将编辑器注册到终端命令行中');
+      // @ts-ignore
+      this.$message.error(
+        '打开编辑器失败，请先手动启动编辑器，或者将编辑器注册到终端命令行中'
+      );
     });
     window.addEventListener('message', async event => {
       const { data } = event;
@@ -136,7 +146,7 @@ export default class extends Vue {
       if (data.handler === 'client.screen.capture') {
         this.form.url = data.url;
       }
-    })   
+    });
   }
 
   private async previewHandler() {
@@ -154,6 +164,7 @@ export default class extends Vue {
   }
 
   private trashHandler() {
+    // @ts-ignore
     this.$confirm('此操作将重置, 是否继续?', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
@@ -194,7 +205,7 @@ export default class extends Vue {
     this.dialogFormVisible = false;
   }
 
-  private async getSerializeTree () {
+  private async getSerializeTree() {
     const viewFrame: any = document.querySelector('#viewContent');
     viewFrame.contentWindow.postMessage({ handler: 'html-2-canvas' }, '*');
   }
@@ -205,7 +216,7 @@ export default class extends Vue {
 
   private async sceneHandler(name) {
     await socket.emit('generator.toolbar.initScene', {
-      name,
+      name
     });
     this.showPopover = false;
   }
@@ -220,7 +231,6 @@ export default class extends Vue {
   allowDrag(draggingNode) {
     return draggingNode.data.label.indexOf('三级 3-2-2') === -1;
   }
-
 }
 </script>
 <style lang="scss" scoped>
@@ -248,14 +258,14 @@ export default class extends Vue {
     font-size: 14px;
     margin-right: 16px;
     &:hover {
-      color: #409EFF;
+      color: #409eff;
     }
   }
   &__item.success {
-    color: #409EFF;
+    color: #409eff;
   }
   .active-preview {
-    color: #409EFF;
+    color: #409eff;
   }
 }
 .scene-item {
@@ -274,18 +284,19 @@ export default class extends Vue {
   margin-bottom: 10px;
   cursor: pointer;
 }
-.toolbar-search{
+.toolbar-search {
   position: absolute;
   left: 50%;
   margin-left: -86px;
 }
-.help-link{
+.help-link {
   text-decoration: none;
   &:hover {
-    color: #409EFF;
+    color: #409eff;
   }
 }
-.icon-houtui,.icon-qianjin{
+.icon-houtui,
+.icon-qianjin {
   font-size: 20px;
 }
 </style>

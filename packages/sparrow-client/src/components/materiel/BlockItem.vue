@@ -32,8 +32,11 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
+// @ts-ignore
 import { AppModule } from '@/store/modules/app';
+// @ts-ignore
 import socket from '@/util/socket.js';
+// @ts-ignore
 import Loading from '@/util/loading';
 
 @Component({})

@@ -1,8 +1,8 @@
 <template>
   <div class="panel-body">
-    <vue-form-generator 
-      :schema="schema" 
-      :model="model" 
+    <vue-form-generator
+      :schema="schema"
+      :model="model"
       :options="formOptions"
     ></vue-form-generator>
   </div>
@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       model: {
         attr: {
@@ -27,8 +27,7 @@ export default {
           ],
           label: '文本框',
           type: 1
-        },
-        
+        }
       },
       schema: {
         fields: [
@@ -39,16 +38,16 @@ export default {
             schema: {
               fields: [
                 {
-                  type: "input",
-                  inputType: "text",
-                  label: "placeholder",
-                  model: "placeholder"
+                  type: 'input',
+                  inputType: 'text',
+                  label: 'placeholder',
+                  model: 'placeholder'
                 },
                 {
-                  type: "input",
-                  inputType: "text",
-                  label: "v-model",
-                  model: "v-model"
+                  type: 'input',
+                  inputType: 'text',
+                  label: 'v-model',
+                  model: 'v-model'
                 }
               ]
             }
@@ -60,47 +59,47 @@ export default {
             schema: {
               fields: [
                 {
-                  type: "switch",
-                  label: "required",
-                  model: "required",
+                  type: 'switch',
+                  label: 'required',
+                  model: 'required',
                   textOn: '必填',
                   textOff: '非必填'
                 },
                 {
-                  type: "array",
-                  label: "regList",
-                  model: "regList",
+                  type: 'array',
+                  label: 'regList',
+                  model: 'regList',
                   itemContainerComponent: 'ArrayContainer',
                   showRemoveButton: false,
                   fieldClasses: 'array-editor',
-                  newElementButtonLabelClasses: "el-button el-button--primary el-button--small array-button-add",
+                  newElementButtonLabelClasses:
+                    'el-button el-button--primary el-button--small array-button-add',
                   items: {
                     type: 'object',
                     default: {},
                     schema: {
                       fields: [
                         {
-                          type: "input",
-                          inputType: "text",
-                          label: "label",
-                          model: "label"
+                          type: 'input',
+                          inputType: 'text',
+                          label: 'label',
+                          model: 'label'
                         },
                         {
-                          type: "input",
-                          inputType: "text",
-                          label: "value",
-                          model: "value"
-                        },
+                          type: 'input',
+                          inputType: 'text',
+                          label: 'value',
+                          model: 'value'
+                        }
                       ]
                     }
                   }
-   
                 },
                 {
-                  type: "input",
-                  inputType: "text",
-                  label: "label",
-                  model: "label"
+                  type: 'input',
+                  inputType: 'text',
+                  label: 'label',
+                  model: 'label'
                 }
               ]
             }
@@ -112,18 +111,18 @@ export default {
         validateAfterChanged: true,
         validateAsync: true
       }
-    }
+    };
   }
-}
+};
 </script>
 <style lang="scss">
-.array-editor{
+.array-editor {
   width: 100%;
 }
-.array-button-add{
+.array-button-add {
   margin-top: 10px !important;
 }
-.vue-form-generator .field-wrap{
+.vue-form-generator .field-wrap {
   margin-top: 5px;
 }
 </style>

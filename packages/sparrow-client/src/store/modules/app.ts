@@ -66,7 +66,7 @@ class App extends VuexModule implements IAppState {
   }
 
   @Mutation
-  private SET_UUID (id: string) {
+  private SET_UUID(id: string) {
     this.uuid = id;
   }
 
@@ -76,11 +76,11 @@ class App extends VuexModule implements IAppState {
   }
 
   @Mutation
-  private SET_ACTIVE_TREE_INDEX (activeIndex: number) {
+  private SET_ACTIVE_TREE_INDEX(activeIndex: number) {
     this.activeTreeIndex = activeIndex;
   }
   @Mutation
-  private SET_ACTIVE_COMP_ID (compId: string) {
+  private SET_ACTIVE_COMP_ID(compId: string) {
     this.activeCompId = compId;
   }
 
@@ -115,22 +115,22 @@ class App extends VuexModule implements IAppState {
   }
 
   @Action
-  public setUuid (id: string) {
+  public setUuid(id: string) {
     this.SET_UUID(id);
   }
 
   @Action
-  public setBoxUuid (id: string) {
+  public setBoxUuid(id: string) {
     this.SET_BOXUUID(id);
   }
 
   @Action
-  public setActiveTreeIndex (activeIndex: number) {
+  public setActiveTreeIndex(activeIndex: number) {
     this.SET_ACTIVE_TREE_INDEX(activeIndex);
   }
 
   @Action
-  public setActiveCompId (compId: string) {
+  public setActiveCompId(compId: string) {
     this.SET_ACTIVE_COMP_ID(compId);
   }
 

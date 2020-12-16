@@ -13,19 +13,16 @@ export interface ISettingState {
 
 @Module({ dynamic: true, store, name: 'setting' })
 class Setting extends VuexModule implements ISettingState {
-
   public config = {};
 
   @Mutation
-  private SET_CONFIG (config: any) {
+  private SET_CONFIG(config: any) {
     this.config = config;
   }
 
-
-
   @Action
   public setConfig(data: any) {
-    this.SET_CONFIG(data)
+    this.SET_CONFIG(data);
   }
 }
 

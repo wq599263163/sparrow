@@ -5,15 +5,16 @@
         <el-button type="primary" size="mini">swagger(待开发)</el-button>
       </div> -->
       <div>
-        <el-tag 
+        <el-tag
           v-for="(item, index) in quickList"
           :key="index"
           @click="addQuick(item)"
-        >{{item.label}}</el-tag>
+          >{{ item.label }}</el-tag
+        >
       </div>
       <el-table :border="true" style="width: 100%" :data="list">
         <el-table-column label="url">
-          <template slot-scope="{ row, column, $index }">
+          <template slot-scope="{ row }">
             <div class="drag-box">
               <div class="drag-box" v-if="row.editable">
                 <el-input closable="true" size="small" v-model="row.url" />
@@ -27,10 +28,14 @@
         </el-table-column>
 
         <el-table-column label="方法名">
-          <template slot-scope="{ row, column, $index }">
+          <template slot-scope="{ row }">
             <div class="drag-box">
               <div class="drag-box" v-if="row.editable">
-                <el-input closable="true" size="small" v-model="row.methodName" />
+                <el-input
+                  closable="true"
+                  size="small"
+                  v-model="row.methodName"
+                />
               </div>
 
               <div class="drag-box" v-if="!row.editable">
@@ -41,7 +46,7 @@
         </el-table-column>
 
         <el-table-column label="请求方式">
-          <template slot-scope="{ row, column, $index }">
+          <template slot-scope="{ row }">
             <div class="drag-box">
               <div class="drag-box" v-if="row.editable">
                 <el-radio-group v-model="row.methodType">
@@ -63,14 +68,15 @@
         </el-table-column>
 
         <el-table-column label="tool">
-          <template slot-scope="{ row, column, $index }">
+          <template slot-scope="{ row, $index }">
             <div class="drag-box">
               <div class="drag-box" v-if="row.editable">
                 <div class="drag-box" v-if="row.isNew">
-                  <el-button 
-                    size="mini" 
-                    type="primary" 
-                    @click="saveRow(row, $index)">
+                  <el-button
+                    size="mini"
+                    type="primary"
+                    @click="saveRow(row, $index)"
+                  >
                     添加
                   </el-button>
 
@@ -144,12 +150,12 @@ export default {
     return {
       radionboxOptions: [
         {
-          value: "get",
-          label: "get"
+          value: 'get',
+          label: 'get'
         },
         {
-          value: "post",
-          label: "post"
+          value: 'post',
+          label: 'post'
         }
       ],
       quickList: [
@@ -183,7 +189,7 @@ export default {
 
       if (!methodName || !url) {
         this.listLoading = false;
-        this.$message.error("请填写完整信息。");
+        this.$message.error('请填写完整信息。');
         return;
       } // 模拟网络请求、卡顿 800ms
       const res = await socket.emit('generator.scene.handlerApi', {
@@ -264,7 +270,7 @@ export default {
 
       this.list.push(item);
     }
-  },
+  }
 };
 </script>
 <style lang="scss" scoped></style>
